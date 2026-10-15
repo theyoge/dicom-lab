@@ -1,0 +1,19 @@
+{
+  "Name": "DICOM Lab PACS",
+  "StorageDirectory": "/var/lib/orthanc/db",
+  "Plugins": [
+    "/usr/share/orthanc/plugins",
+    "/usr/local/share/orthanc/plugins"
+  ],
+  "DicomAet": "DICOMLAB",
+  "DicomPort": 4242,
+  "DicomAlwaysAllowEcho": true,
+  "DicomAlwaysAllowStore": true,
+  "DicomAlwaysAllowFind": true,
+  "DicomAlwaysAllowGet": true,
+  "DicomAlwaysAllowMove": true,
+  "HttpPort": 8042,
+  "RemoteAccessAllowed": true,
+  "AuthenticationEnabled": false,
+  "RegisteredUsers": {}
+}

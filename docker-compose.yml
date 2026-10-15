@@ -1,0 +1,35 @@
+services:
+  pacs:
+    image: jodogne/orthanc-plugins
+    container_name: dicom-pacs
+    command: ["/etc/orthanc-lab.json"]
+    ports:
+      - "4242:4242"   # DIMSE (C-ECHO / C-FIND / C-STORE / C-MOVE)
+      - "8042:8042"   # DICOMweb + web UI
+    volumes:
+      - ./orthanc-lab.json:/etc/orthanc-lab.json:ro
+      - orthanc-data:/var/lib/orthanc/db
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/4242"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  client:
+    build: ./client
+    container_name: dicom-client
+    depends_on:
+      pacs:
+        condition: service_healthy
+    environment:
+      PACS_HOST: pacs
+      PACS_PORT: "4242"
+    volumes:
+      - ./scripts:/scripts
+      - ./images:/images
+    working_dir: /scripts
+    tty: true
+    stdin_open: true
+
+volumes:
+  orthanc-data:
